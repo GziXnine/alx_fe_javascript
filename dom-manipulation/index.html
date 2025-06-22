@@ -35,6 +35,15 @@
     <input type="file" id="importFile" accept=".json" />
   </div>
 
+  <!-- Category Filter -->
+  <div style="margin-top: 20px;">
+    <label for="categoryFilter">Filter by Category:</label>
+    <select id="categoryFilter" onchange="filterQuotes()">
+      <option value="all">All Categories</option>
+      <!-- Categories dynamically added here -->
+    </select>
+  </div>
+
   <script src="script.js"></script>
 </body>
 
