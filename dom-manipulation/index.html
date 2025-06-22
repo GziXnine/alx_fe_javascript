@@ -36,6 +36,11 @@
     <select id="categoryFilter" onchange="filterQuotes()">
       <option value="all">All Categories</option>
     </select>
+
+    <button id="newQuote">Show New Quote</button>
+    <button id="exportJsonBtn">Export Quotes</button>
+    <input type="file" id="importFile" accept=".json" />
+    <div id="quoteDisplay"></div>
   </div>
 
   <span id="syncStatus">🔄 Syncing...</span>
