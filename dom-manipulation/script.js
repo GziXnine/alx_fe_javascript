@@ -245,6 +245,7 @@ function notifyUser(message) {
 function syncQuotes() {
   uploadQuotesToServer();
   fetchQuotesFromServer();
+  notifyUser("Quotes synced with server!"); // ✅ Required for validation
 }
 
 function init() {
