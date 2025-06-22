@@ -43,6 +43,30 @@ function saveQuotes() {
   localStorage.setItem("quotes", JSON.stringify(quotes));
 }
 
+function createAddQuoteForm() {
+  const formContainer = document.createElement("div");
+
+  const quoteInput = document.createElement("input");
+  quoteInput.id = "newQuoteText";
+  quoteInput.type = "text";
+  quoteInput.placeholder = "Enter a new quote";
+
+  const categoryInput = document.createElement("input");
+  categoryInput.id = "newQuoteCategory";
+  categoryInput.type = "text";
+  categoryInput.placeholder = "Enter quote category";
+
+  const addButton = document.createElement("button");
+  addButton.textContent = "Add Quote";
+  addButton.addEventListener("click", addQuote);
+
+  formContainer.appendChild(quoteInput);
+  formContainer.appendChild(categoryInput);
+  formContainer.appendChild(addButton);
+
+  document.body.appendChild(formContainer);
+}
+
 // --- Show Random Quote & Store Last Viewed in Session Storage ---
 function showRandomQuote() {
   const selectedCategory = categoryFilter.value;
@@ -146,6 +170,7 @@ function importFromJsonFile(event) {
 function init() {
   loadQuotes();
   populateCategories();
+  createAddQuoteForm();
 
   // Load last session's quote if available
   const last = sessionStorage.getItem("lastQuote");
