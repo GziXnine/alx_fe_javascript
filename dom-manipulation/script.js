@@ -57,18 +57,15 @@ function showRandomQuote() {
   const random = filtered[Math.floor(Math.random() * filtered.length)];
   quoteDisplay.textContent = `"${random.text}" — (${random.category})`;
 
-  // Session storage for last viewed
   sessionStorage.setItem("lastQuote", JSON.stringify(random));
 }
 
-// --- Filter Quote Display Based on Dropdown ---
 function filterQuotes() {
   const selectedCategory = categoryFilter.value;
   localStorage.setItem("selectedCategory", selectedCategory);
   showRandomQuote();
 }
 
-// --- Create Quote Form Dynamically ---
 function createAddQuoteForm() {
   const formContainer = document.createElement("div");
 
@@ -93,7 +90,6 @@ function createAddQuoteForm() {
   document.body.appendChild(formContainer);
 }
 
-// --- Add Quote and Update Filter Options ---
 function addQuote() {
   const textInput = document.getElementById("newQuoteText");
   const categoryInput = document.getElementById("newQuoteCategory");
@@ -116,7 +112,6 @@ function addQuote() {
   showRandomQuote();
 }
 
-// --- Populate Categories Dropdown Uniquely ---
 function populateCategories() {
   const selected = localStorage.getItem("selectedCategory") || "all";
 
@@ -130,7 +125,6 @@ function populateCategories() {
     categoryFilter.appendChild(option);
   });
 
-  // Re-apply last selected filter if still valid
   if ([...categoryFilter.options].some((opt) => opt.value === selected)) {
     categoryFilter.value = selected;
   } else {
@@ -138,49 +132,17 @@ function populateCategories() {
   }
 }
 
-// --- Init App ---
-function init() {
-  loadQuotes();
-  createAddQuoteForm();
-  populateCategories();
-
-  const lastQuote = sessionStorage.getItem("lastQuote");
-  if (lastQuote) {
-    const q = JSON.parse(lastQuote);
-    quoteDisplay.textContent = `"${q.text}" — (${q.category})`;
-  } else {
-    showRandomQuote();
-  }
-
-  // Restore filter from localStorage
-  const selectedCategory = localStorage.getItem("selectedCategory");
-  if (
-    selectedCategory &&
-    [...categoryFilter.options].some((o) => o.value === selectedCategory)
-  ) {
-    categoryFilter.value = selectedCategory;
-    showRandomQuote();
-  }
-
-  setInterval(fetchServerQuotes, 15000);
-}
-
-const SERVER_API_URL = "https://jsonplaceholder.typicode.com/posts"; // Simulated endpoint
-async function fetchServerQuotes() {
+const SERVER_API_URL = "https://jsonplaceholder.typicode.com/posts";
+async function fetchQuotesFromServer() {
   try {
-    const response = await fetch(SERVER_API_URL);
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts");
     const serverData = await response.json();
 
-    // Simulate quotes from server
+    // Simulated quote data from server
     const simulatedQuotes = serverData.slice(0, 5).map((post) => ({
       text: post.title,
       category: "Server",
     }));
-
-    document.getElementById("syncStatus").textContent = "🔄 Syncing...";
-    setTimeout(() => {
-      document.getElementById("syncStatus").textContent = "✅ Synced";
-    }, 1000);
 
     resolveConflicts(simulatedQuotes);
   } catch (error) {
@@ -220,6 +182,31 @@ function notifyUser(message) {
   `;
   document.body.appendChild(alertBox);
   setTimeout(() => alertBox.remove(), 4000);
+}
+
+function init() {
+  loadQuotes();
+  createAddQuoteForm();
+  populateCategories();
+
+  const lastQuote = sessionStorage.getItem("lastQuote");
+  if (lastQuote) {
+    const q = JSON.parse(lastQuote);
+    quoteDisplay.textContent = `"${q.text}" — (${q.category})`;
+  } else {
+    showRandomQuote();
+  }
+
+  const selectedCategory = localStorage.getItem("selectedCategory");
+  if (
+    selectedCategory &&
+    [...categoryFilter.options].some((o) => o.value === selectedCategory)
+  ) {
+    categoryFilter.value = selectedCategory;
+    showRandomQuote();
+  }
+
+  setInterval(fetchServerQuotes, 15000);
 }
 
 newQuoteBtn.addEventListener("click", showRandomQuote);
