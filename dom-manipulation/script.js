@@ -242,6 +242,11 @@ function notifyUser(message) {
   setTimeout(() => alertBox.remove(), 4000);
 }
 
+function syncQuotes() {
+  uploadQuotesToServer();
+  fetchQuotesFromServer();
+}
+
 function init() {
   loadQuotes();
   createAddQuoteForm();
@@ -261,7 +266,7 @@ function init() {
     showRandomQuote();
   }
 
-  setInterval(fetchQuotesFromServer, 15000); // Sync every 15s
+  setInterval(syncQuotes, 15000);
 }
 
 newQuoteBtn.addEventListener("click", showRandomQuote);
